@@ -60,16 +60,27 @@ class ProjectDescription {
         return $content;
     }
  
+    // List posts from the category
+    $others = get_posts(array('category' => get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE)));
+    $postList = [];
+    foreach ($others as $o) {
+        $postList[] = array(
+            'title' => get_the_title($o),
+            'permalink' => get_permalink($o),
+        );
+    }
+
     $box = $this->renderBox(
         (boolean) get_option(OPTION_JUMPENABLED, true),
         get_option(OPTION_BOXTITLE, ProjectDescription::OPTION_BOXTITLE_DEFAULT),
-        html_entity_decode(stripcslashes(get_option(OPTION_BOXCONTENTS, ProjectDescription::OPTION_BOXCONTENTS_DEFAULT)))
+        html_entity_decode(stripcslashes(get_option(OPTION_BOXCONTENTS, ProjectDescription::OPTION_BOXCONTENTS_DEFAULT))),
+        $postList
     );
 
     return $box.$content;
   }
 
-  protected function renderBox($jumpEnabled, $boxTitle, $boxContents) {
+  protected function renderBox($jumpEnabled, $boxTitle, $boxContents, $postList) {
     ob_start();
     include('template-box.php');
     return ob_get_clean();
