@@ -1,0 +1,6 @@
+aside#project-description { margin: 0 0 1.625em 0; padding: 1.125em 1.625em 1.625em; background: #FCFCFC; border: 1px solid #E5E5E5; }
+aside#project-description > h2 { font-size: 1.125em; }
+aside#project-description > h2 > a { float: right; line-height: 2.6em; font-size: 0.625em; }
+aside#project-description > * { font-size: 0.8em; }
+aside#project-description .other-posts p { margin-bottom: 0.625em; }
+aside#project-description .other-posts-list { margin-bottom: 0; }

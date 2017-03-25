@@ -24,12 +24,20 @@ class ProjectDescription {
   const OPTION_BOXCONTENTS_DEFAULT = '';
 
   public function __construct() {
-    add_action('admin_menu', array($this, 'setupAdminMenu'));
+    if (is_admin()) {
+        add_action('admin_menu', array($this, 'setupAdminMenu'));
+    } else {
+        add_action('wp_enqueue_scripts', array($this, 'addStylesheet'));
+    }
     add_filter('the_content', array($this, 'prependWithProjectDescription'));
   }
 
   public function setupAdminMenu() {
     add_options_page('Project description', 'Project description', 'edit_plugins', 'project-description', array($this, 'handleSettingsPage'));
+  }
+
+  public function addStylesheet() {
+    wp_enqueue_style('kantoniak-project-description', plugins_url('kantoniak-project-description/css/style.css')); 
   }
 
   public function handleSettingsPage() {
