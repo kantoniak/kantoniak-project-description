@@ -15,6 +15,7 @@ class ProjectDescription {
 
   const OPTION_CATEGORY = 'kantoniak_pd_category';
   const OPTION_JUMPENABLED = 'kantoniak_pd_jumpenabled';
+  const OPTION_SHOWFROMCAT = 'kantoniak_pd_showfromcat';
   const OPTION_BOXTITLE = 'kantoniak_pd_boxtitle';
   const OPTION_BOXCONTENTS = 'kantoniak_pd_boxcontents';
 
@@ -36,6 +37,7 @@ class ProjectDescription {
     if (isset($_POST['submitted'])) {
         update_option(OPTION_CATEGORY, (int) $_POST['cat']);
         update_option(OPTION_JUMPENABLED, (boolean) $_POST['jump_to_content']);
+        update_option(OPTION_SHOWFROMCAT, (boolean) $_POST['show_from_cat']);
         update_option(OPTION_BOXTITLE, $_POST['boxtitle']);
         update_option(OPTION_BOXCONTENTS, $_POST['boxcontents']);
         $settingsUpdated = true;
@@ -50,6 +52,7 @@ class ProjectDescription {
       'selected' => (int) get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE)
     );
     $jumpToChecked = (boolean) get_option(OPTION_JUMPENABLED, true);
+    $showFromCat = (boolean) get_option(OPTION_SHOWFROMCAT, true);
     $boxTitle = get_option(OPTION_BOXTITLE, ProjectDescription::OPTION_BOXTITLE_DEFAULT);
     $boxContents = get_option(OPTION_BOXCONTENTS, ProjectDescription::OPTION_BOXCONTENTS_DEFAULT);
     include('template-settings.php');
@@ -74,13 +77,14 @@ class ProjectDescription {
         (boolean) get_option(OPTION_JUMPENABLED, true),
         get_option(OPTION_BOXTITLE, ProjectDescription::OPTION_BOXTITLE_DEFAULT),
         html_entity_decode(stripcslashes(get_option(OPTION_BOXCONTENTS, ProjectDescription::OPTION_BOXCONTENTS_DEFAULT))),
-        $postList
+        $postList,
+        (boolean) get_option(OPTION_SHOWFROMCAT, true)
     );
 
     return $box.$content;
   }
 
-  protected function renderBox($jumpEnabled, $boxTitle, $boxContents, $postList) {
+  protected function renderBox($jumpEnabled, $boxTitle, $boxContents, $postList, $showFromCat) {
     ob_start();
     include('template-box.php');
     return ob_get_clean();

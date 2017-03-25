@@ -29,6 +29,13 @@
             <label for="jump_to_content">Show "Jump to content" link</label>
           </td>
       </tr>
+      <tr>
+          <th scope="row">Show posts from category</th>
+          <td>
+            <input name="show_from_cat" type="checkbox" <?php echo ($showFromCat ? ' checked' : ''); ?>>
+            <label for="show_from_cat">Show a list of posts from chosen category.</label>
+          </td>
+      </tr>
       </table>
     </div>
 

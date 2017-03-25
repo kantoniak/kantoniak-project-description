@@ -6,7 +6,7 @@
   <div class="content">
     <?php echo $boxContents; ?>
   </div>
-<?php if ($postList) { ?>
+<?php if ($showFromCat) { ?>
   <div class="other-posts">
     <p>See other posts from this category:</p>
     <ul class="other-posts-list">
