@@ -47,14 +47,18 @@ class ProjectDescription {
   }
 
   public function prependWithProjectDescription($content) {
-    if (!is_single() || !in_the_loop() || !is_main_query() ) {
+    if (!is_single() || !in_the_loop() || !is_main_query() || !in_category(get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE))) {
         return $content;
     }
  
-    return $this->renderBox().$content;
+    $box = $this->renderBox(
+        (boolean) get_option(OPTION_JUMPENABLED, true)
+    );
+
+    return $box.$content;
   }
 
-  protected function renderBox() {
+  protected function renderBox($jumpEnabled) {
     ob_start();
     include('template-box.php');
     return ob_get_clean();
