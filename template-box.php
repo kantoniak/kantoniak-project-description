@@ -1,10 +1,10 @@
 <aside id="project-description">
-  <h2>Project name</h2>
+  <h2><?php echo $boxTitle; ?></h2>
   <?php if ($jumpEnabled) {
     echo '<a href="#project-description-end">Jump to content</a>';
   } ?>
   <div class="content">
-    <p>Lorem ipsum dolor sit amet.</p>
+    <?php echo $boxContents; ?>
   </div>
 </aside>
 <?php if ($jumpEnabled) {

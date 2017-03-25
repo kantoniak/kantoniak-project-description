@@ -14,8 +14,13 @@ namespace kantoniak {
 class ProjectDescription {
 
   const OPTION_CATEGORY = 'kantoniak_pd_category';
-  const OPTION_CATEGORY_NONE = -1;
   const OPTION_JUMPENABLED = 'kantoniak_pd_jumpenabled';
+  const OPTION_BOXTITLE = 'kantoniak_pd_boxtitle';
+  const OPTION_BOXCONTENTS = 'kantoniak_pd_boxcontents';
+
+  const OPTION_CATEGORY_NONE = -1;
+  const OPTION_BOXTITLE_DEFAULT = 'About the project';
+  const OPTION_BOXCONTENTS_DEFAULT = '';
 
   public function __construct() {
     add_action('admin_menu', array($this, 'setupAdminMenu'));
@@ -31,6 +36,8 @@ class ProjectDescription {
     if (isset($_POST['submitted'])) {
         update_option(OPTION_CATEGORY, (int) $_POST['cat']);
         update_option(OPTION_JUMPENABLED, (boolean) $_POST['jump_to_content']);
+        update_option(OPTION_BOXTITLE, $_POST['boxtitle']);
+        update_option(OPTION_BOXCONTENTS, $_POST['boxcontents']);
         $settingsUpdated = true;
     }
 
@@ -43,6 +50,8 @@ class ProjectDescription {
       'selected' => (int) get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE)
     );
     $jumpToChecked = (boolean) get_option(OPTION_JUMPENABLED, true);
+    $boxTitle = get_option(OPTION_BOXTITLE, ProjectDescription::OPTION_BOXTITLE_DEFAULT);
+    $boxContents = get_option(OPTION_BOXCONTENTS, ProjectDescription::OPTION_BOXCONTENTS_DEFAULT);
     include('template-settings.php');
   }
 
@@ -52,13 +61,15 @@ class ProjectDescription {
     }
  
     $box = $this->renderBox(
-        (boolean) get_option(OPTION_JUMPENABLED, true)
+        (boolean) get_option(OPTION_JUMPENABLED, true),
+        get_option(OPTION_BOXTITLE, ProjectDescription::OPTION_BOXTITLE_DEFAULT),
+        html_entity_decode(stripcslashes(get_option(OPTION_BOXCONTENTS, ProjectDescription::OPTION_BOXCONTENTS_DEFAULT)))
     );
 
     return $box.$content;
   }
 
-  protected function renderBox($jumpEnabled) {
+  protected function renderBox($jumpEnabled, $boxTitle, $boxContents) {
     ob_start();
     include('template-box.php');
     return ob_get_clean();
