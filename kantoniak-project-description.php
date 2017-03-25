@@ -72,7 +72,10 @@ class ProjectDescription {
     }
  
     // List posts from the category
-    $others = get_posts(array('category' => get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE)));
+    $others = get_posts(array(
+        'category' => get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE),
+        'numberposts' => -1
+    ));
     $postList = [];
     foreach ($others as $o) {
         $postList[] = array(
