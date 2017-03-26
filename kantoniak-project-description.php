@@ -16,10 +16,12 @@ class ProjectDescription {
   const OPTION_CATEGORY = 'kantoniak_pd_category';
   const OPTION_JUMPENABLED = 'kantoniak_pd_jumpenabled';
   const OPTION_SHOWFROMCAT = 'kantoniak_pd_showfromcat';
+  const OPTION_CHANGEDESC = 'kantoniak_pd_changedesc';
   const OPTION_BOXTITLE = 'kantoniak_pd_boxtitle';
   const OPTION_BOXCONTENTS = 'kantoniak_pd_boxcontents';
 
   const OPTION_CATEGORY_NONE = -1;
+  const OPTION_CHANGEDESC_DEFAULT = false;
   const OPTION_BOXTITLE_DEFAULT = 'About the project';
   const OPTION_BOXCONTENTS_DEFAULT = '';
 
@@ -28,8 +30,9 @@ class ProjectDescription {
         add_action('admin_menu', array($this, 'setupAdminMenu'));
     } else {
         add_action('wp_enqueue_scripts', array($this, 'addStylesheet'));
+        add_filter('the_content', array($this, 'prependWithProjectDescription'));
+        add_filter('category_description', array($this, 'onCategoryDescription'));
     }
-    add_filter('the_content', array($this, 'prependWithProjectDescription'));
   }
 
   public function setupAdminMenu() {
@@ -46,6 +49,7 @@ class ProjectDescription {
         update_option(OPTION_CATEGORY, (int) $_POST['cat']);
         update_option(OPTION_JUMPENABLED, (boolean) $_POST['jump_to_content']);
         update_option(OPTION_SHOWFROMCAT, (boolean) $_POST['show_from_cat']);
+        update_option(OPTION_CHANGEDESC, (boolean) $_POST['change_cat_desc']);
         update_option(OPTION_BOXTITLE, $_POST['boxtitle']);
         update_option(OPTION_BOXCONTENTS, $_POST['boxcontents']);
         $settingsUpdated = true;
@@ -61,6 +65,7 @@ class ProjectDescription {
     );
     $jumpToChecked = (boolean) get_option(OPTION_JUMPENABLED, true);
     $showFromCat = (boolean) get_option(OPTION_SHOWFROMCAT, true);
+    $changeCatDesc = (boolean) get_option(OPTION_CHANGEDESC, ProjectDescription::OPTION_CHANGEDESC_DEFAULT);
     $boxTitle = get_option(OPTION_BOXTITLE, ProjectDescription::OPTION_BOXTITLE_DEFAULT);
     $boxContents = get_option(OPTION_BOXCONTENTS, ProjectDescription::OPTION_BOXCONTENTS_DEFAULT);
     include('template-settings.php');
@@ -70,7 +75,20 @@ class ProjectDescription {
     if (!is_single() || !in_the_loop() || !is_main_query() || !in_category(get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE))) {
         return $content;
     }
- 
+
+    $box = $this->renderBox();
+    return $box.$content;
+  }
+
+  public function onCategoryDescription($content) {
+    if (!is_category(get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE)) || !(boolean) get_option(OPTION_CHANGEDESC, ProjectDescription::OPTION_CHANGEDESC_DEFAULT)) {
+      return $content;
+    }
+
+    return $this->renderBox();
+  }
+
+  protected function renderBox() {
     // List posts from the category
     $others = get_posts(array(
         'category' => get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE),
@@ -84,18 +102,12 @@ class ProjectDescription {
         );
     }
 
-    $box = $this->renderBox(
-        (boolean) get_option(OPTION_JUMPENABLED, true),
-        get_option(OPTION_BOXTITLE, ProjectDescription::OPTION_BOXTITLE_DEFAULT),
-        html_entity_decode(stripcslashes(get_option(OPTION_BOXCONTENTS, ProjectDescription::OPTION_BOXCONTENTS_DEFAULT))),
-        $postList,
-        (boolean) get_option(OPTION_SHOWFROMCAT, true)
-    );
+    $jumpEnabled = (boolean) get_option(OPTION_JUMPENABLED, true);
+    $boxTitle = get_option(OPTION_BOXTITLE, ProjectDescription::OPTION_BOXTITLE_DEFAULT);
+    $boxContents = html_entity_decode(stripcslashes(get_option(OPTION_BOXCONTENTS, ProjectDescription::OPTION_BOXCONTENTS_DEFAULT)));
+    $postList = $postList;
+    $showFromCat = (boolean) get_option(OPTION_SHOWFROMCAT, true);
 
-    return $box.$content;
-  }
-
-  protected function renderBox($jumpEnabled, $boxTitle, $boxContents, $postList, $showFromCat) {
     ob_start();
     include('template-box.php');
     return ob_get_clean();

@@ -36,6 +36,14 @@
             <label for="show_from_cat">Show a list of posts from chosen category.</label>
           </td>
       </tr>
+      <tr>
+          <th scope="row">Show in category archives</th>
+          <td>
+            <input name="change_cat_desc" type="checkbox" <?php echo ($changeCatDesc ? ' checked' : ''); ?>>
+            <label for="change_cat_desc">Change category description in archives to description box</label>
+            <p class="description">Filter will return HTML code. Not every template shows category description.</p>
+          </td>
+      </tr>
       </table>
     </div>
 
