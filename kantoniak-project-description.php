@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Project Description
-Plugin URI: http://antoniak.in/
+Plugin URI: https://github.com/kantoniak/kantoniak-project-description/
 Description: This plugin adds project description at the top of the article.
-Version: 0.0.0
+Version: 0.0.1
 Author: Krzysztof Antoniak
 Author URI: http://antoniak.in/
 License: GNU General Public License, version 3.0 (GPL-3.0)
