@@ -46,33 +46,33 @@ class ProjectDescription {
   public function handleSettingsPage() {
 
     if (isset($_POST['submitted'])) {
-        update_option(OPTION_CATEGORY, (int) $_POST['cat']);
-        update_option(OPTION_JUMPENABLED, (boolean) $_POST['jump_to_content']);
-        update_option(OPTION_SHOWFROMCAT, (boolean) $_POST['show_from_cat']);
-        update_option(OPTION_CHANGEDESC, (boolean) $_POST['change_cat_desc']);
-        update_option(OPTION_BOXTITLE, $_POST['boxtitle']);
-        update_option(OPTION_BOXCONTENTS, $_POST['boxcontents']);
+        update_option(ProjectDescription::OPTION_CATEGORY, (int) $_POST['cat']);
+        update_option(ProjectDescription::OPTION_JUMPENABLED, (boolean) $_POST['jump_to_content']);
+        update_option(ProjectDescription::OPTION_SHOWFROMCAT, (boolean) $_POST['show_from_cat']);
+        update_option(ProjectDescription::OPTION_CHANGEDESC, (boolean) $_POST['change_cat_desc']);
+        update_option(ProjectDescription::OPTION_BOXTITLE, $_POST['boxtitle']);
+        update_option(ProjectDescription::OPTION_BOXCONTENTS, $_POST['boxcontents']);
         $settingsUpdated = true;
     }
 
-    $noCategorySelected = ((boolean) get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE) == false);
+    $noCategorySelected = ((boolean) get_option(ProjectDescription::OPTION_CATEGORY, ProjectDescription::OPTION_CATEGORY_NONE) == false);
     $categoriesDropdownOptions = array(
       'show_option_none' => 'Do not show at all (disables plugin)',
-      'option_none_value' => OPTION_CATEGORY_NONE,
+      'option_none_value' => ProjectDescription::OPTION_CATEGORY_NONE,
       'hierarchical' => true,
       'hide_empty' => false,
-      'selected' => (int) get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE)
+      'selected' => (int) get_option(ProjectDescription::OPTION_CATEGORY, ProjectDescription::OPTION_CATEGORY_NONE)
     );
-    $jumpToChecked = (boolean) get_option(OPTION_JUMPENABLED, true);
-    $showFromCat = (boolean) get_option(OPTION_SHOWFROMCAT, true);
-    $changeCatDesc = (boolean) get_option(OPTION_CHANGEDESC, ProjectDescription::OPTION_CHANGEDESC_DEFAULT);
-    $boxTitle = get_option(OPTION_BOXTITLE, ProjectDescription::OPTION_BOXTITLE_DEFAULT);
-    $boxContents = get_option(OPTION_BOXCONTENTS, ProjectDescription::OPTION_BOXCONTENTS_DEFAULT);
+    $jumpToChecked = (boolean) get_option(ProjectDescription::OPTION_JUMPENABLED, true);
+    $showFromCat = (boolean) get_option(ProjectDescription::OPTION_SHOWFROMCAT, true);
+    $changeCatDesc = (boolean) get_option(ProjectDescription::OPTION_CHANGEDESC, ProjectDescription::OPTION_CHANGEDESC_DEFAULT);
+    $boxTitle = get_option(ProjectDescription::OPTION_BOXTITLE, ProjectDescription::OPTION_BOXTITLE_DEFAULT);
+    $boxContents = get_option(ProjectDescription::OPTION_BOXCONTENTS, ProjectDescription::OPTION_BOXCONTENTS_DEFAULT);
     include('template-settings.php');
   }
 
   public function prependWithProjectDescription($content) {
-    if (!is_single() || !in_the_loop() || !is_main_query() || !in_category(get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE))) {
+    if (!is_single() || !in_the_loop() || !is_main_query() || !in_category(get_option(ProjectDescription::OPTION_CATEGORY, ProjectDescription::OPTION_CATEGORY_NONE))) {
         return $content;
     }
 
@@ -81,7 +81,7 @@ class ProjectDescription {
   }
 
   public function onCategoryDescription($content) {
-    if (!is_category(get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE)) || !(boolean) get_option(OPTION_CHANGEDESC, ProjectDescription::OPTION_CHANGEDESC_DEFAULT)) {
+    if (!is_category(get_option(ProjectDescription::OPTION_CATEGORY, ProjectDescription::OPTION_CATEGORY_NONE)) || !(boolean) get_option(ProjectDescription::OPTION_CHANGEDESC, ProjectDescription::OPTION_CHANGEDESC_DEFAULT)) {
       return $content;
     }
 
@@ -91,7 +91,7 @@ class ProjectDescription {
   protected function renderBox() {
     // List posts from the category
     $others = get_posts(array(
-        'category' => get_option(OPTION_CATEGORY, OPTION_CATEGORY_NONE),
+        'category' => get_option(ProjectDescription::OPTION_CATEGORY, ProjectDescription::OPTION_CATEGORY_NONE),
         'numberposts' => -1
     ));
     $postList = [];
@@ -102,11 +102,11 @@ class ProjectDescription {
         );
     }
 
-    $jumpEnabled = (boolean) get_option(OPTION_JUMPENABLED, true);
-    $boxTitle = get_option(OPTION_BOXTITLE, ProjectDescription::OPTION_BOXTITLE_DEFAULT);
-    $boxContents = html_entity_decode(stripcslashes(get_option(OPTION_BOXCONTENTS, ProjectDescription::OPTION_BOXCONTENTS_DEFAULT)));
+    $jumpEnabled = (boolean) get_option(ProjectDescription::OPTION_JUMPENABLED, true);
+    $boxTitle = get_option(ProjectDescription::OPTION_BOXTITLE, ProjectDescription::OPTION_BOXTITLE_DEFAULT);
+    $boxContents = html_entity_decode(stripcslashes(get_option(ProjectDescription::OPTION_BOXCONTENTS, ProjectDescription::OPTION_BOXCONTENTS_DEFAULT)));
     $postList = $postList;
-    $showFromCat = (boolean) get_option(OPTION_SHOWFROMCAT, true);
+    $showFromCat = (boolean) get_option(ProjectDescription::OPTION_SHOWFROMCAT, true);
 
     ob_start();
     include('template-box.php');
