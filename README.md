@@ -1,9 +1,9 @@
 # Project Description Plugin
 
-A simple plugin to show custom content before article main text.
+A simple plugin to show custom content before article main text, along with list of articles from the category. Includes full editor for the content.
 
 <p align="center">
-  <img src="readme/preview.jpg" align="center" />
+  <img src="assets/screenshot-1.png" align="center" />
 </p>
 
 ## Features
@@ -16,7 +16,11 @@ A simple plugin to show custom content before article main text.
 
 ## Installation
 
-Copy contents to your `wp-content/plugins` directory or upload ZIP with repo contents via Wordpress admin (Plugins/Add new/Upload plugin).
+1. Copy contents to your `wp-content/plugins` directory or upload ZIP with repo contents via Wordpress admin (Plugins/Add new/Upload plugin).
+1. In admin site, do to *Settings/Project description*.
+1. Fill in the *About the project* section.
+1. Choose category from *General settings*.
+1. Save changes.
 
 ## License
 
