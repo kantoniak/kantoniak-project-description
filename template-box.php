@@ -10,7 +10,7 @@
   </div>
 <?php if ($showFromCat) { ?>
   <div class="other-posts">
-    <p>See all the posts from this category:</p>
+    <p>See all the posts from category “<?php echo $catName; ?>”:</p>
     <ul class="other-posts-list">
 <?php
   foreach ($postList as $post) {

@@ -42,6 +42,12 @@
             <input name="change_cat_desc" type="checkbox" <?php echo ($changeCatDesc ? ' checked' : ''); ?>>
             <label for="change_cat_desc">Change category description in archives to description box</label>
             <p class="description">Filter will return HTML code. Not every template shows category description.</p>
+
+            <div class="show_in_subcat_group" style="margin-top: 15px">
+              <input name="show_in_subcat" type="checkbox" <?php echo ($showInSubcat ? ' checked' : ''); ?>>
+              <label for="show_in_subcat">Show also in subcategories</label>
+              <p class="description">Will run filter also for archive pages of subcategories.</p>
+            </div>
           </td>
       </tr>
       </table>

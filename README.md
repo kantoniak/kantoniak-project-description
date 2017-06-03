@@ -10,7 +10,7 @@ A simple plugin to show custom content before article main text, along with list
 
 * Set custom title and contents (full editor)
 * Show in articles from single category
-* Show in category archives (disabled by default)
+* Show in category archives (disabled by default), optionally in subcategories
 * Toggle "Jump to content" link
 * Toggle article list visibility
 
