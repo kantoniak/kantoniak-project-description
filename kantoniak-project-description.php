@@ -13,6 +13,8 @@ namespace kantoniak {
 
 class ProjectDescription {
 
+  const PLUGIN_SLUG = 'project-description';
+
   const OPTION_CATEGORY = 'kantoniak_pd_category';
   const OPTION_JUMPENABLED = 'kantoniak_pd_jumpenabled';
   const OPTION_SHOWFROMCAT = 'kantoniak_pd_showfromcat';
@@ -42,7 +44,7 @@ class ProjectDescription {
   }
 
   public function addStylesheet() {
-    wp_enqueue_style('kantoniak-project-description', plugins_url('kantoniak-project-description/css/style.css')); 
+    wp_enqueue_style(ProjectDescription::PLUGIN_SLUG, plugins_url(ProjectDescription::PLUGIN_SLUG .'/css/style.css')); 
   }
 
   public function handleSettingsPage() {
